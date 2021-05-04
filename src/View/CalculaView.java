@@ -1,15 +1,33 @@
 package View;
 
 import Model.Formula;
+import Model.Resultado;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
-
+import java.io.*;
+import javax.swing.JOptionPane;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1CFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.PDType3Font;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class CalculaView extends javax.swing.JFrame {
 
-    public int modo = 0;
+    public int modo = 0, marca = 0, superficie = 0;
+    public String tmodo, tmarca, tsuperficie;
+    Resultado rs = new Resultado();
+    Formula obj = new Formula();
+    File f;
+    FileWriter w;
+    BufferedWriter bw;
+    PrintWriter wr;
 
     public CalculaView() {
         initComponents();
@@ -19,7 +37,6 @@ public class CalculaView extends javax.swing.JFrame {
         Panel1.setBackground(new Color(0, 0, 0, 0));
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -44,7 +61,7 @@ public class CalculaView extends javax.swing.JFrame {
         btnPdf = new javax.swing.JButton();
         btnExportar = new javax.swing.JButton();
         btnTxt = new javax.swing.JButton();
-        btnAerografo7 = new javax.swing.JButton();
+        btnAerografo = new javax.swing.JButton();
         nuevo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         resultado = new javax.swing.JTextArea();
@@ -272,17 +289,17 @@ public class CalculaView extends javax.swing.JFrame {
         });
         Panel1.add(btnTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 550, 103, 105));
 
-        btnAerografo7.setBackground(new Color(0,0,0,0));
-        btnAerografo7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMano.png"))); // NOI18N
-        btnAerografo7.setBorder(null);
-        btnAerografo7.setOpaque(false);
-        btnAerografo7.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnManoP.png"))); // NOI18N
-        btnAerografo7.addActionListener(new java.awt.event.ActionListener() {
+        btnAerografo.setBackground(new Color(0,0,0,0));
+        btnAerografo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMano.png"))); // NOI18N
+        btnAerografo.setBorder(null);
+        btnAerografo.setOpaque(false);
+        btnAerografo.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnManoP.png"))); // NOI18N
+        btnAerografo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAerografo7ActionPerformed(evt);
+                btnAerografoActionPerformed(evt);
             }
         });
-        Panel1.add(btnAerografo7, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 590, 74, 74));
+        Panel1.add(btnAerografo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 590, 74, 74));
 
         nuevo.setBackground(new Color(0,0,0,0));
         nuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnNuevo.png"))); // NOI18N
@@ -340,44 +357,59 @@ public class CalculaView extends javax.swing.JFrame {
     private void nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoActionPerformed
         nuevo();
         modo = 0;
+        marca = 0;
+        superficie = 0;
         estado();
+        forma();
+        situacion();
+
+
     }//GEN-LAST:event_nuevoActionPerformed
 
     private void btnSayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSayerActionPerformed
-        // TODO add your handling code here:
+        sayer();
+        forma();
     }//GEN-LAST:event_btnSayerActionPerformed
 
     private void btnAirlesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAirlesActionPerformed
-        // TODO add your handling code here:
+        modoAirles();
+        estado();
     }//GEN-LAST:event_btnAirlesActionPerformed
 
     private void btnContimexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContimexActionPerformed
-        // TODO add your handling code here:
+        Conti();
+        forma();
     }//GEN-LAST:event_btnContimexActionPerformed
 
     private void btnVollerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVollerActionPerformed
-        // TODO add your handling code here:
+        voller();
+        forma();
     }//GEN-LAST:event_btnVollerActionPerformed
 
     private void btnAcuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcuarioActionPerformed
-        // TODO add your handling code here:
+        acuario();
+        forma();
     }//GEN-LAST:event_btnAcuarioActionPerformed
 
     private void btnMaderaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMaderaActionPerformed
-        // TODO add your handling code here:
+        madera();
+        situacion();
     }//GEN-LAST:event_btnMaderaActionPerformed
 
     private void btnConcretoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcretoActionPerformed
-        // TODO add your handling code here:
+        concreto();
+        situacion();
     }//GEN-LAST:event_btnConcretoActionPerformed
 
     private void btnYesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYesoActionPerformed
-        // TODO add your handling code here:
+        yeso();
+        situacion();
     }//GEN-LAST:event_btnYesoActionPerformed
 
-    private void btnAerografo7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAerografo7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAerografo7ActionPerformed
+    private void btnAerografoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAerografoActionPerformed
+        modoAerografo();
+        estado();
+    }//GEN-LAST:event_btnAerografoActionPerformed
 
     private void btnJsonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJsonActionPerformed
         // TODO add your handling code here:
@@ -392,30 +424,53 @@ public class CalculaView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTxtActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-        // TODO add your handling code here:
+//        txt("presupuesto.txt");
+json();
     }//GEN-LAST:event_btnExportarActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    //METODO DE PINTADO
     public void estado() {
-        if (1 == modo) {
-            btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
-            btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
-
-        } else if (2 == modo) {
-            btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png")));
-
-            btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
-        } else if (3 == modo) {
-            btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png")));
-
-            btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
-        } else {
-            btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
-            btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
-            btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png")));
-
+        switch (modo) {
+            case 1:
+                btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
+                btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
+                btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png")));
+                btnAerografo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMano.png")));
+                break;
+            case 2:
+                btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png")));
+                btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
+                btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png")));
+                btnAerografo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMano.png")));
+                break;
+            case 3:
+                btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png")));
+                btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
+                btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png")));
+                btnAerografo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMano.png")));
+                break;
+            case 4:
+                btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png")));
+                btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
+                btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
+                btnAerografo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMano.png")));
+                break;
+            case 5:
+                btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png")));
+                btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
+                btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
+                btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png")));
+                break;
+            default:
+                btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png")));
+                btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
+                btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
+                btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png")));
+                btnAerografo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMano.png")));
+                break;
         }
     }
 
@@ -427,6 +482,7 @@ public class CalculaView extends javax.swing.JFrame {
         } else {
             modo = 1;
             btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrochaE.png")));
+            tmodo = "brocha";
 
         }
         return modo;
@@ -436,13 +492,12 @@ public class CalculaView extends javax.swing.JFrame {
     public int modoRodillo() {
         if (modo == 2) {
             modo = 0;
-            System.out.println(modo);
             btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
 
         } else {
             modo = 2;
-            System.out.println(modo);
             btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodilloE.png")));
+            tmodo = "rodillo";
 
         }
         return modo;
@@ -451,16 +506,190 @@ public class CalculaView extends javax.swing.JFrame {
     public int modoAirmix() {
         if (modo == 3) {
             modo = 0;
-            System.out.println(modo);
             btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
 
         } else {
             modo = 3;
             btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistolaE.png")));
-
-            System.out.println(modo);
+            tmodo = "Airmix";
         }
         return modo;
+    }
+
+    public int modoAerografo() {
+        if (modo == 5) {
+            modo = 0;
+            btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png")));
+
+        } else {
+            modo = 5;
+            btnAerografo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnManoE.png")));
+            tmodo = "Aerografo";
+
+        }
+        return modo;
+    }
+
+    public int modoAirles() {
+        if (modo == 4) {
+            modo = 0;
+            btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png")));
+
+        } else {
+            modo = 4;
+            btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotorE.png")));
+            tmodo = "Airles";
+
+        }
+        return modo;
+    }
+
+    // SUPERFICIE A PINTAR
+    public void situacion() {
+        switch (superficie) {
+            case 1:
+                btnConcreto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnConcreto.png")));
+                btnYeso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnYeso.png")));
+                break;
+            case 2:
+                btnMadera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMadera.png")));
+                btnYeso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnYeso.png")));
+                break;
+            case 3:
+                btnMadera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMadera.png")));
+                btnConcreto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnConcreto.png")));
+                break;
+            default:
+                btnMadera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMadera.png")));
+                btnConcreto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnConcreto.png")));
+                btnYeso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnYeso.png")));
+                break;
+        }
+    }
+
+    public int madera() {
+        if (superficie == 1) {
+            superficie = 0;
+            btnMadera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMadera.png")));
+
+        } else {
+            superficie = 1;
+            btnMadera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMaderaE.png")));
+            tsuperficie = "madera";
+
+        }
+        return superficie;
+    }
+
+    public int concreto() {
+        if (superficie == 2) {
+            superficie = 0;
+            btnConcreto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnConcreto.png")));
+
+        } else {
+            superficie = 2;
+            btnConcreto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnConcretoE.png")));
+            tsuperficie = "concreto";
+        }
+        return superficie;
+    }
+
+    public int yeso() {
+        if (superficie == 3) {
+            superficie = 0;
+            btnYeso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnYeso.png")));
+
+        } else {
+            superficie = 3;
+            btnYeso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnYesoE.png")));
+            tsuperficie = "yeso";
+        }
+        return superficie;
+    }
+
+    //MARCA DE PINTURA
+    public void forma() {
+        switch (marca) {
+            case 1:
+                btnContimex.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnContimex.png")));
+                btnVoller.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnVoller.png")));
+                btnAcuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnAcuario.png")));
+                break;
+            case 2:
+                btnSayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnSayer.png")));
+                btnVoller.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnVoller.png")));
+                btnAcuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnAcuario.png")));
+                break;
+            case 3:
+                btnSayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnSayer.png")));
+                btnContimex.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnContimex.png")));
+                btnAcuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnAcuario.png")));
+                break;
+            case 4:
+                btnSayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnSayer.png")));
+                btnContimex.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnContimex.png")));
+                btnVoller.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnVoller.png")));
+                break;
+            default:
+                btnSayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnSayer.png")));
+                btnContimex.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnContimex.png")));
+                btnVoller.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnVoller.png")));
+                btnAcuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnAcuario.png")));
+                break;
+        }
+    }
+
+    public int sayer() {
+        if (marca == 1) {
+            marca = 0;
+            btnSayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnSayer.png")));
+
+        } else {
+            marca = 1;
+            btnSayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnSayerE.png")));
+            tmarca = "sayer";
+        }
+        return marca;
+    }
+
+    public int Conti() {
+        if (marca == 2) {
+            marca = 0;
+            btnContimex.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnContimex.png")));
+
+        } else {
+            marca = 2;
+            btnContimex.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnContimexE.png")));
+            tmarca = "contimex";
+        }
+        return marca;
+    }
+
+    public int voller() {
+        if (marca == 3) {
+            marca = 0;
+            btnVoller.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnVoller.png")));
+
+        } else {
+            marca = 3;
+            btnVoller.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnVollerE.png")));
+            tmarca = "voller home";
+
+        }
+        return marca;
+    }
+
+    public int acuario() {
+        if (marca == 4) {
+            marca = 0;
+            btnAcuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnAcuario.png")));
+        } else {
+            marca = 4;
+            btnAcuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnAcuarioE.png")));
+            tmarca = "pinturas acuario";
+
+        }
+        return marca;
     }
 
     public void nuevo() {
@@ -470,42 +699,109 @@ public class CalculaView extends javax.swing.JFrame {
     }
 
     public void calcular() {
-        double res = 0;
-        double cp = 0;
-        double fCorrecion = 0;
-        double presupuesto = 0, descuento = 0;
-        String instrumento, presu, desc;
 
-        if (modo == 1) {
-            fCorrecion = 0.95;
-        } else if (modo == 3) {
-            fCorrecion = 0.70;
-        } else if (modo == 2) {
-            fCorrecion = 0.90;
+        String imprimir;
+
+        double fa, fr, cp, ct, presupuesto, precio, descuento, total;
+        fa = obj.FactorAplicacion(modo);
+        fr = obj.FactorRugocidad(superficie);
+        ct = obj.consumoTeorico(Double.parseDouble(areaPintado.getText()), Double.parseDouble(rendimiento.getText()));
+        cp = obj.consumoPractico(ct, fa, fr);
+        double balde = Math.round(cp);
+        precio = obj.Precios(marca);
+        presupuesto = obj.presupeto(balde, precio);
+        descuento = obj.descuento(balde, presupuesto);
+        total = obj.montoTotal(presupuesto, descuento);
+        imprimir = obj.mensaje(balde, tmarca, tsuperficie, tmodo, descuento, total);
+
+        //paso necesario para imprimir en pdf
+        rs.setBalde(balde);
+        rs.setDescuento(descuento);
+        rs.setMarca(tmarca);
+        rs.setMetodo(tmodo);
+        rs.setMonto(total);
+        rs.setSuperficie(tsuperficie);
+
+        resultado.setText(imprimir);
+    }
+
+    public void add() {
+
+    }
+
+    public void txt(String nombre) {
+        try {
+            f = new File(nombre);
+            w = new FileWriter(f);
+
+            bw = new BufferedWriter(w);
+            wr = new PrintWriter(bw);
+
+            wr.write(resultado.getText());
+//            wr.append("\ntexto2");
+
+            wr.close();
+            bw.close();
+            JOptionPane.showMessageDialog(null, "Archivo exportado en .txt");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "error" + e);
         }
+    }
 
-        cp = obj.consumoPractico(Double.parseDouble(areaPintado.getText()), Double.parseDouble(rendimiento.getText()), fCorrecion);
-        res = Math.round(cp);
-        presupuesto = res * 13.90;
-        if (modo == 1) {
-            instrumento = "brocha";
-        } else if (modo == 2) {
-            instrumento = "rodillo";
-
-        } else {
-            instrumento = "pistola de aire";
-
+    public void json() {
+        JSONObject json = new JSONObject();
+            json.put("name", "anthoni");
+            JSONArray list =new JSONArray();
+            list.add("java");
+            list.add("javsada");
+            list.add("jas");
+            list.add("xxas");
+            json.put("course",list);
+        try(FileWriter file=new FileWriter("presupuesto.json")) {
+            file.write(json.toJSONString());
+            file.flush();
+            JOptionPane.showMessageDialog(null, "Archivo exportado en .json");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "error" + e);
         }
+    }
 
-        if (res >= 12) {
-            descuento = 0.10;
+    public void pdf() {
+        try {
+            PDDocument pd = new PDDocument();
+            PDPage pg = new PDPage(PDRectangle.A6);
+            pd.addPage(pg);
+            PDPageContentStream contenido = new PDPageContentStream(pd, pg);
+
+            contenido.beginText();
+
+            contenido.setFont(PDType1Font.HELVETICA, 12);
+            contenido.newLineAtOffset(20, pg.getMediaBox().getHeight() - 52);
+            //newLineAtoffset sirve para añadir una linea en pdf
+            contenido.showText("-------------Presupuesto de pintura-------------");
+            contenido.newLineAtOffset(0, -15);
+            contenido.showText("Baldes necesarios: " + rs.getBalde());
+            contenido.newLineAtOffset(0, -15);
+            contenido.showText("Instrumento: " + rs.getMetodo());
+            contenido.newLineAtOffset(0, -15);
+            contenido.showText("Superficie: " + rs.getSuperficie());
+            contenido.newLineAtOffset(0, -15);
+            contenido.showText("Marca :" + rs.getMarca());
+            contenido.newLineAtOffset(0, -15);
+            contenido.showText("Descuento: " + rs.getDescuento());
+            contenido.newLineAtOffset(0, -15);
+            contenido.showText("---------------------------------------------------------");
+            contenido.newLineAtOffset(0, -15);
+            contenido.showText("Monto a pagar: " + rs.getMonto());
+
+            contenido.endText();
+            contenido.close();
+            pd.save("D:\\prueba.pdf");
+            JOptionPane.showMessageDialog(null, "Archivo exportado en .pdf");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "error" + e);
+            System.out.println(e);
         }
-        descuento = presupuesto * descuento;
-        presupuesto = presupuesto - descuento;
-        presu = getTwoDecimals(presupuesto);
-        desc = getTwoDecimals(descuento);
-
-        resultado.setText("---Presupuesto de pintura---" + "\nGalones necesarios: " + res + "\nInstrumento a usar: " + instrumento + "\nDescuento: " + desc + " soles" +"\n"+"\n"+"\n------------------------------------"+ "\nPrecio Total: " + presu + " soles");
     }
 
     private static String getTwoDecimals(double value) {
@@ -514,20 +810,20 @@ public class CalculaView extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) {
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CalculaView().setVisible(true);
             }
         });
     }
-    Formula obj = new Formula();
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel1;
     private javax.swing.JTextField areaPintado;
     private javax.swing.JButton btnAcuario;
-    private javax.swing.JButton btnAerografo7;
+    private javax.swing.JButton btnAerografo;
     private javax.swing.JButton btnAirles;
     private javax.swing.JButton btnAirmix;
     private javax.swing.JButton btnBrocha;

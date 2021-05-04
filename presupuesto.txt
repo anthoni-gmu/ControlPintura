@@ -1,0 +1,9 @@
+-------------Presupuesto de pintura-------------
+Baldes necesarios: 4.0
+Instrumento: Airmix
+Superficie: yeso
+Marca: voller home
+Descuento:0.0
+
+-------------------------------------------------
+Monto a pagar:123.6 soles
