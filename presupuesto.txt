@@ -1,9 +1,9 @@
 -------------Presupuesto de pintura-------------
-Baldes necesarios: 4.0
-Instrumento: Airmix
-Superficie: yeso
-Marca: voller home
+Baldes necesarios: 5.0
+Instrumento: brocha
+Superficie: concreto
+Marca: contimex
 Descuento:0.0
 
 -------------------------------------------------
-Monto a pagar:123.6 soles
+Monto a pagar:129.5 soles

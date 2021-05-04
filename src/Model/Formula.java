@@ -1,6 +1,7 @@
 package Model;
 
 import Service.IFormula;
+import javax.swing.JButton;
 
 public class Formula  implements IFormula{
 
@@ -44,10 +45,10 @@ public class Formula  implements IFormula{
                 "\nInstrumento: "+metodo+
                 "\nSuperficie: "+superficie+
                 "\nMarca: "+marca+
-                "\nDescuento:"+descuento+
+                "\nDescuento: "+descuento+" soles"+
                 "\n"+
                 "\n-------------------------------------------------"+
-                "\nMonto a pagar:"+monto+" soles";
+                "\nMonto a pagar: "+monto+" soles";
                 
         return men;
     }
@@ -67,6 +68,7 @@ public class Formula  implements IFormula{
     public double montoTotal(double presupuesto, double descuento) {
         return presupuesto-descuento;
     }
+    
 
     
     

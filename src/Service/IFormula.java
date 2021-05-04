@@ -1,5 +1,7 @@
 package Service;
 
+import javax.swing.JButton;
+
 public interface IFormula {
     // Definiendo las operaciones
     double consumoTeorico(double area,double rendimiento);
@@ -11,4 +13,6 @@ public interface IFormula {
     String mensaje(double balde,String marca,String superficie,String metodo,double descuento,double monto);
     double descuento(double balde,double presupuesto);
     double montoTotal(double presupuesto, double descuento);
+    
+    
 }

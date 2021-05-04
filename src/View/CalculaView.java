@@ -5,22 +5,18 @@ import Model.Resultado;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.text.DecimalFormat;
 import java.io.*;
 import javax.swing.JOptionPane;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType1CFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.PDType3Font;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class CalculaView extends javax.swing.JFrame {
 
-    public int modo = 0, marca = 0, superficie = 0;
+    public int modo = 0, marca = 0, superficie = 0, export = 0;
     public String tmodo, tmarca, tsuperficie;
     Resultado rs = new Resultado();
     Formula obj = new Formula();
@@ -95,7 +91,7 @@ public class CalculaView extends javax.swing.JFrame {
                 calcularActionPerformed(evt);
             }
         });
-        Panel1.add(calcular, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 340, 170, 63));
+        Panel1.add(calcular, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 343, 170, 63));
 
         btnClose.setBackground(new Color(0,0,0,0));
         btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnClose.png"))); // NOI18N
@@ -107,7 +103,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnCloseActionPerformed(evt);
             }
         });
-        Panel1.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 38, 38));
+        Panel1.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 38, 38, 38));
 
         btnBrocha.setBackground(new Color(0,0,0,0));
         btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png"))); // NOI18N
@@ -119,7 +115,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnBrochaActionPerformed(evt);
             }
         });
-        Panel1.add(btnBrocha, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 470, 74, 74));
+        Panel1.add(btnBrocha, new org.netbeans.lib.awtextra.AbsoluteConstraints(71, 470, 74, 74));
 
         btnRodillo.setBackground(new Color(0,0,0,0));
         btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png"))); // NOI18N
@@ -131,7 +127,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnRodilloActionPerformed(evt);
             }
         });
-        Panel1.add(btnRodillo, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 470, 74, 74));
+        Panel1.add(btnRodillo, new org.netbeans.lib.awtextra.AbsoluteConstraints(177, 470, 74, 74));
 
         btnSayer.setBackground(new Color(0,0,0,0));
         btnSayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnSayer.png"))); // NOI18N
@@ -143,7 +139,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnSayerActionPerformed(evt);
             }
         });
-        Panel1.add(btnSayer, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 94, 92));
+        Panel1.add(btnSayer, new org.netbeans.lib.awtextra.AbsoluteConstraints(466, 157, 94, 92));
 
         btnAirles.setBackground(new Color(0,0,0,0));
         btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png"))); // NOI18N
@@ -155,7 +151,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnAirlesActionPerformed(evt);
             }
         });
-        Panel1.add(btnAirles, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 590, 74, 74));
+        Panel1.add(btnAirles, new org.netbeans.lib.awtextra.AbsoluteConstraints(108, 590, 74, 74));
 
         btnAirmix.setBackground(new Color(0,0,0,0));
         btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png"))); // NOI18N
@@ -167,7 +163,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnAirmixActionPerformed(evt);
             }
         });
-        Panel1.add(btnAirmix, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 470, 74, 74));
+        Panel1.add(btnAirmix, new org.netbeans.lib.awtextra.AbsoluteConstraints(284, 470, 74, 74));
 
         btnContimex.setBackground(new Color(0,0,0,0));
         btnContimex.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnContimex.png"))); // NOI18N
@@ -179,7 +175,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnContimexActionPerformed(evt);
             }
         });
-        Panel1.add(btnContimex, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 160, 94, 92));
+        Panel1.add(btnContimex, new org.netbeans.lib.awtextra.AbsoluteConstraints(595, 157, 94, 92));
 
         btnVoller.setBackground(new Color(0,0,0,0));
         btnVoller.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnVoller.png"))); // NOI18N
@@ -191,7 +187,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnVollerActionPerformed(evt);
             }
         });
-        Panel1.add(btnVoller, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 150, 94, 92));
+        Panel1.add(btnVoller, new org.netbeans.lib.awtextra.AbsoluteConstraints(724, 155, 94, 92));
 
         btnAcuario.setBackground(new Color(0,0,0,0));
         btnAcuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnAcuario.png"))); // NOI18N
@@ -203,7 +199,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnAcuarioActionPerformed(evt);
             }
         });
-        Panel1.add(btnAcuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 160, 94, 92));
+        Panel1.add(btnAcuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(848, 157, 94, 92));
 
         btnMadera.setBackground(new Color(0,0,0,0));
         btnMadera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMadera.png"))); // NOI18N
@@ -215,7 +211,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnMaderaActionPerformed(evt);
             }
         });
-        Panel1.add(btnMadera, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 760, 74, 74));
+        Panel1.add(btnMadera, new org.netbeans.lib.awtextra.AbsoluteConstraints(71, 760, 74, 74));
 
         btnConcreto.setBackground(new Color(0,0,0,0));
         btnConcreto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnConcreto.png"))); // NOI18N
@@ -227,7 +223,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnConcretoActionPerformed(evt);
             }
         });
-        Panel1.add(btnConcreto, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 760, 74, 74));
+        Panel1.add(btnConcreto, new org.netbeans.lib.awtextra.AbsoluteConstraints(177, 762, 74, 74));
 
         btnYeso.setBackground(new Color(0,0,0,0));
         btnYeso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnYeso.png"))); // NOI18N
@@ -239,7 +235,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnYesoActionPerformed(evt);
             }
         });
-        Panel1.add(btnYeso, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 760, 74, 74));
+        Panel1.add(btnYeso, new org.netbeans.lib.awtextra.AbsoluteConstraints(284, 760, 74, 74));
 
         btnJson.setBackground(new Color(0,0,0,0));
         btnJson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnJson.png"))); // NOI18N
@@ -251,7 +247,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnJsonActionPerformed(evt);
             }
         });
-        Panel1.add(btnJson, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 280, 103, 105));
+        Panel1.add(btnJson, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 277, 103, 105));
 
         btnPdf.setBackground(new Color(0,0,0,0));
         btnPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPdf.png"))); // NOI18N
@@ -263,7 +259,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnPdfActionPerformed(evt);
             }
         });
-        Panel1.add(btnPdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 410, 103, 105));
+        Panel1.add(btnPdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(1111, 412, 103, 105));
 
         btnExportar.setBackground(new Color(0,0,0,0));
         btnExportar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnExportar.png"))); // NOI18N
@@ -275,7 +271,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnExportarActionPerformed(evt);
             }
         });
-        Panel1.add(btnExportar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 740, 170, 63));
+        Panel1.add(btnExportar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 728, 170, 63));
 
         btnTxt.setBackground(new Color(0,0,0,0));
         btnTxt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnTxt.png"))); // NOI18N
@@ -287,7 +283,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnTxtActionPerformed(evt);
             }
         });
-        Panel1.add(btnTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 550, 103, 105));
+        Panel1.add(btnTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(1109, 549, 103, 105));
 
         btnAerografo.setBackground(new Color(0,0,0,0));
         btnAerografo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMano.png"))); // NOI18N
@@ -299,7 +295,7 @@ public class CalculaView extends javax.swing.JFrame {
                 btnAerografoActionPerformed(evt);
             }
         });
-        Panel1.add(btnAerografo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 590, 74, 74));
+        Panel1.add(btnAerografo, new org.netbeans.lib.awtextra.AbsoluteConstraints(218, 590, 74, 74));
 
         nuevo.setBackground(new Color(0,0,0,0));
         nuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnNuevo.png"))); // NOI18N
@@ -311,7 +307,7 @@ public class CalculaView extends javax.swing.JFrame {
                 nuevoActionPerformed(evt);
             }
         });
-        Panel1.add(nuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 790, 170, 63));
+        Panel1.add(nuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 793, 170, 63));
 
         resultado.setBackground(new Color(0,0,0,0));
         resultado.setColumns(20);
@@ -321,7 +317,7 @@ public class CalculaView extends javax.swing.JFrame {
         resultado.setOpaque(false);
         jScrollPane1.setViewportView(resultado);
 
-        Panel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 450, 520, 300));
+        Panel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 450, 500, 300));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Background.png"))); // NOI18N
         Panel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1280, 900));
@@ -359,9 +355,11 @@ public class CalculaView extends javax.swing.JFrame {
         modo = 0;
         marca = 0;
         superficie = 0;
+        export = 0;
         estado();
         forma();
         situacion();
+        export();
 
 
     }//GEN-LAST:event_nuevoActionPerformed
@@ -412,27 +410,29 @@ public class CalculaView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAerografoActionPerformed
 
     private void btnJsonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJsonActionPerformed
-        // TODO add your handling code here:
+        jsonIcon();
+        export();
     }//GEN-LAST:event_btnJsonActionPerformed
 
     private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfActionPerformed
-        // TODO add your handling code here:
+        pdfIcon();
+        export();
     }//GEN-LAST:event_btnPdfActionPerformed
 
     private void btnTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtActionPerformed
-        // TODO add your handling code here:
+        txtIcon();
+        export();
     }//GEN-LAST:event_btnTxtActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-//        txt("presupuesto.txt");
-json();
+     exportar();
     }//GEN-LAST:event_btnExportarActionPerformed
 
     /**
      * @param args the command line arguments
      */
     //METODO DE PINTADO
-    public void estado() {
+    private void estado() {
         switch (modo) {
             case 1:
                 btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
@@ -474,7 +474,7 @@ json();
         }
     }
 
-    public int modoBrocha() {
+    private int modoBrocha() {
         if (modo == 1) {
             modo = 0;
             btnBrocha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnBrocha.png")));
@@ -489,7 +489,7 @@ json();
 
     }
 
-    public int modoRodillo() {
+    private int modoRodillo() {
         if (modo == 2) {
             modo = 0;
             btnRodillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnRodillo.png")));
@@ -503,7 +503,7 @@ json();
         return modo;
     }
 
-    public int modoAirmix() {
+    private int modoAirmix() {
         if (modo == 3) {
             modo = 0;
             btnAirmix.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPistola.png")));
@@ -516,7 +516,7 @@ json();
         return modo;
     }
 
-    public int modoAerografo() {
+    private int modoAerografo() {
         if (modo == 5) {
             modo = 0;
             btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png")));
@@ -530,7 +530,7 @@ json();
         return modo;
     }
 
-    public int modoAirles() {
+    private int modoAirles() {
         if (modo == 4) {
             modo = 0;
             btnAirles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMotor.png")));
@@ -545,7 +545,7 @@ json();
     }
 
     // SUPERFICIE A PINTAR
-    public void situacion() {
+    private void situacion() {
         switch (superficie) {
             case 1:
                 btnConcreto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnConcreto.png")));
@@ -567,7 +567,7 @@ json();
         }
     }
 
-    public int madera() {
+    private int madera() {
         if (superficie == 1) {
             superficie = 0;
             btnMadera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnMadera.png")));
@@ -581,7 +581,7 @@ json();
         return superficie;
     }
 
-    public int concreto() {
+    private int concreto() {
         if (superficie == 2) {
             superficie = 0;
             btnConcreto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnConcreto.png")));
@@ -594,7 +594,7 @@ json();
         return superficie;
     }
 
-    public int yeso() {
+    private int yeso() {
         if (superficie == 3) {
             superficie = 0;
             btnYeso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnYeso.png")));
@@ -608,7 +608,7 @@ json();
     }
 
     //MARCA DE PINTURA
-    public void forma() {
+    private void forma() {
         switch (marca) {
             case 1:
                 btnContimex.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnContimex.png")));
@@ -639,7 +639,7 @@ json();
         }
     }
 
-    public int sayer() {
+    private int sayer() {
         if (marca == 1) {
             marca = 0;
             btnSayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnSayer.png")));
@@ -652,7 +652,7 @@ json();
         return marca;
     }
 
-    public int Conti() {
+    private int Conti() {
         if (marca == 2) {
             marca = 0;
             btnContimex.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnContimex.png")));
@@ -665,7 +665,7 @@ json();
         return marca;
     }
 
-    public int voller() {
+    private int voller() {
         if (marca == 3) {
             marca = 0;
             btnVoller.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnVoller.png")));
@@ -679,7 +679,7 @@ json();
         return marca;
     }
 
-    public int acuario() {
+    private int acuario() {
         if (marca == 4) {
             marca = 0;
             btnAcuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnAcuario.png")));
@@ -692,13 +692,76 @@ json();
         return marca;
     }
 
-    public void nuevo() {
+    //Diseño de .txt .pdf .json
+    private void export() {
+        switch (export) {
+            case 1:
+                btnPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPdf.png")));
+                btnTxt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnTxt.png")));
+                break;
+            case 2:
+                btnJson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnJson.png")));
+                btnTxt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnTxt.png")));
+                break;
+            case 3:
+                btnJson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnJson.png")));
+                btnPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPdf.png")));
+                break;
+            default:
+                btnJson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnJson.png")));
+                btnPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPdf.png")));
+                btnTxt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnTxt.png")));
+                break;
+        }
+    }
+
+    private int jsonIcon() {
+        if (export == 1) {
+            marca = 0;
+            btnJson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnJson.png")));
+
+        } else {
+            export = 1;
+            btnJson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnJsonE.png")));
+
+        }
+        return export;
+    }
+
+    private int pdfIcon() {
+        if (export == 2) {
+            marca = 0;
+            btnPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPdf.png")));
+
+        } else {
+            export = 2;
+            btnPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnPdfE.png")));
+
+        }
+        return export;
+    }
+
+    private int txtIcon() {
+        if (export == 3) {
+            marca = 0;
+            btnTxt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnTxt.png")));
+
+        } else {
+            export = 3;
+            btnTxt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btnTxtE.png")));
+
+        }
+        return export;
+    }
+
+    //Limpiar campos
+    private void nuevo() {
         areaPintado.setText("");
         resultado.setText("");
         rendimiento.setText("");
     }
-
-    public void calcular() {
+    //
+    private void calcular() {
 
         String imprimir;
 
@@ -725,21 +788,15 @@ json();
         resultado.setText(imprimir);
     }
 
-    public void add() {
-
-    }
-
-    public void txt(String nombre) {
+    
+    //METODOS PARA EXPORTAR
+    private void txt(String nombre) {
         try {
             f = new File(nombre);
             w = new FileWriter(f);
-
             bw = new BufferedWriter(w);
             wr = new PrintWriter(bw);
-
             wr.write(resultado.getText());
-//            wr.append("\ntexto2");
-
             wr.close();
             bw.close();
             JOptionPane.showMessageDialog(null, "Archivo exportado en .txt");
@@ -748,21 +805,22 @@ json();
         }
     }
 
-    public void json() {
+    private void json() {
         JSONObject json = new JSONObject();
-            json.put("name", "anthoni");
-            JSONArray list =new JSONArray();
-            list.add("java");
-            list.add("javsada");
-            list.add("jas");
-            list.add("xxas");
-            json.put("course",list);
-        try(FileWriter file=new FileWriter("presupuesto.json")) {
+        json.put("Operacion", "Presupuesto de pintura");
+        json.put("Baldes necesarios", rs.getBalde());
+        json.put("Instrumento", rs.getMetodo());
+        json.put("Superficie", rs.getSuperficie());
+        json.put("Marca", rs.getMarca());
+        json.put("Descuento", rs.getDescuento());
+        json.put("Monto a pagar", rs.getMonto());
+        
+        try (FileWriter file = new FileWriter("presupuesto.json")) {
             file.write(json.toJSONString());
             file.flush();
             JOptionPane.showMessageDialog(null, "Archivo exportado en .json");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "error" + e);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "error" + e);
         }
     }
 
@@ -796,19 +854,26 @@ json();
 
             contenido.endText();
             contenido.close();
-            pd.save("D:\\prueba.pdf");
+            pd.save("D:\\Proyectos\\Java\\Prototipo-CalculadoraPintura\\presupuesto.pdf");
             JOptionPane.showMessageDialog(null, "Archivo exportado en .pdf");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e);
             System.out.println(e);
         }
     }
-
-    private static String getTwoDecimals(double value) {
-        DecimalFormat df = new DecimalFormat("0.00");
-        return df.format(value);
+    public void exportar(){
+        switch(export){
+            case 1:
+                json();
+                break;
+            case 2:
+                pdf();
+                break;
+            case 3:
+                txt("presupuesto.txt");
+                break;
+        }
     }
-
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
